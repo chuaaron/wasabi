@@ -169,7 +169,7 @@ class HttpRequestHandler(private val appServer: AppServer): SimpleChannelInbound
             response.negotiatedMediaType = response.contentType
             val fileStream = FileInputStream(response.absolutePathToFileToStream)
             ChunkedNioFile(fileStream.channel, 8192)
-        } else if (response.negotiatedMediaType == "application/octet-stream") {
+        } else if (response.negotiatedMediaType == "application/octet-stream" || response.sendBuffer is ByteArray) {
             val responseBytes = response.sendBuffer as ByteArray
             response.contentLength = responseBytes.size.toLong()
             ChunkedStream(responseBytes.inputStream())
